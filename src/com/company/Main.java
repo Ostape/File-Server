@@ -10,21 +10,21 @@ class Main {
         String choose = "";
         String nameFile;
 
-        while (!choose.equals("exit")){
+        while (!choose.equals("EXIT")){
 
             choose = scan.next();
-            if (!choose.equals("exit")) {
+            if (!choose.equals("EXIT")) {
                 nameFile = scan.skip(" ").nextLine();
                 switch (choose) {
-                    case "add":
+                    case "PUT":
                         addFile(nameFile, files);
                         break;
 
-                    case "delete":
+                    case "DELETE":
                         deleteFile(nameFile, files);
                         break;
 
-                    case "get":
+                    case "GET":
                         getFile(nameFile, files);
                         break;
                 }
