@@ -1,72 +1,105 @@
 package com.company;
-import java.util.List;
-import java.util.Scanner;
+
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.List;
+import java.util.Arrays;
 
 class Main {
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        List<String> files = new ArrayList<>();
-        String choose = "";
-        String nameFile;
 
-        while (!choose.equals("exit")){
+    }
 
-            choose = scan.next();
-            if (!choose.equals("exit")) {
-                nameFile = scan.skip(" ").nextLine();
-                switch (choose) {
-                    case "add":
-                        addFile(nameFile, files);
-                        break;
 
-                    case "delete":
-                        deleteFile(nameFile, files);
-                        break;
+}
 
-                    case "get":
-                        getFile(nameFile, files);
-                        break;
+interface AccountService {
+    /**
+     * It finds an account by owner id
+     * @param id owner unique identifier
+     * @return account or null
+     */
+    Account findAccountByOwnerId(long id);
+    /**
+     * It count the number of account with balance > the given value
+     * @param value
+     * @return the number of accounts
+     */
+    long countAccountsWithBalanceGreaterThan(long value);
+}
+
+// Declare and implement your AccountServiceImpl here
+class AccountServiceImpl implements AccountService {
+    private Account []accounts;
+
+    public AccountServiceImpl(Account []accounts){
+        this.accounts = accounts;
+    }
+
+
+    @Override
+    public Account findAccountByOwnerId(long id){
+        try{
+            long m = 0L;
+            for (Account a : accounts){
+                if(m == id){
+                    return a;
                 }
             }
+        }catch(Exception e){
+            return null;
         }
     }
 
-    private static void addFile(String name, List<String> nameFile){
-        if (nameFile.contains(name) || !checkNameFile(name)){
-            System.out.println("Cannot add the file");
+
+    @Override
+    public long countAccountsWithBalanceGreaterThan(long value){
+        long num = 0;
+        for(Account a : accounts){
+            if(a.getBalance() > value){
+                num++;
+            }
         }
-        else {
-            nameFile.add(name);
-            System.out.println("The file " + name + " added successfully");
-        }
+        return num;
     }
 
-    private static void deleteFile(String name, List<String> nameFile){
-        if (!nameFile.contains(name)){
-            System.out.println("File " + name + " not found");
-        }
-        else {
-            nameFile.remove(name);
-            System.out.println("The file was deleted");
-        }
+}
+
+
+class Account {
+
+    private long id;
+    private long balance;
+    private User owner;
+
+    public Account(long id, long balance, User owner) {
+        this.id = id;
+        this.balance = balance;
+        this.owner = owner;
     }
 
-    private static void getFile(String name, List <String> nameFile){
-        if (nameFile.contains(name)){
-            System.out.println("The file was sent");
-        }
-        else {
-            System.out.println("File " + name + " not found");
-        }
+    public long getId() { return id; }
+
+    public long getBalance() { return balance; }
+
+    public User getOwner() { return owner; }
+}
+
+class User {
+
+    private long id;
+    private String firstName;
+    private String lastName;
+
+    public User(long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
-    private static boolean checkNameFile(String name){
-        switch (name){
-            case "file1":case "file2":case "file3":case "file4":case "file5":
-                case "file6":case "file7":case "file8":case "file9":case "file10":
-                    return true;
-                    default:return false;
-        }
-    }
+    public long getId() { return id; }
+
+    public String getFirstName() { return firstName; }
+
+    public String getLastName() { return lastName; }
 }
